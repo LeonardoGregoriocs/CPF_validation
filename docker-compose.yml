@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=neoway
+    ports:
+      - "8080:5432"
