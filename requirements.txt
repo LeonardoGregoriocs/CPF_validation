@@ -2,3 +2,4 @@ numpy
 psycopg2
 fastapi
 uvicorn[standard]
+validate-docbr
