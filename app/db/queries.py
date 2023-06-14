@@ -1,4 +1,4 @@
-from .database import DB
+from db.database import DB
 
 cursor = DB.connect()
 

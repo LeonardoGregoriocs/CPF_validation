@@ -30,8 +30,6 @@ services:
     depends_on:
       - database
       - adminer
-    ports:
-      - "8000:8000"
 
 networks:
   neoway-net:
