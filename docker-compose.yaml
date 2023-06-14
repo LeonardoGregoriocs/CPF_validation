@@ -5,12 +5,13 @@ services:
     image: postgres
     container_name: db
     ports:
-      - "5432:5432"
+      - 5432:5432
     restart: always
     environment:
       POSTGRES_USER: neowayuser
       POSTGRES_PASSWORD: neoway
       POSTGRES_DB: dataclient
+      POSTGRES_HOST: 0.0.0.0
 
   adminer:
     image: adminer
@@ -25,12 +26,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: python
-    networks:
-      - neoway-net
     depends_on:
       - database
       - adminer
-
-networks:
-  neoway-net:
-    driver: bridge
