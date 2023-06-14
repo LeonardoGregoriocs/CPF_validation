@@ -7,10 +7,10 @@ class DB:
     def connect():
         connection = psycopg2.connect(
             database="dataclient",
-            host='database',
-            user= 'neowayuser',
-            password='neoway'
-    )
+            host="192.168.64.2",
+            user="neowayuser",
+            password="neoway"
+        )
 
         cursor = connection.cursor()
         return cursor
