@@ -10,8 +10,8 @@ try:
     queries = Queries()
     queries.create_table()
 
-    cpf_validation = AnalyzeDataService()
-    cpf_validation.analyze_data()
+    analyze_data_service = AnalyzeDataService()
+    analyze_data_service.analyze_data()
 
     print("Script run successfully")
 
