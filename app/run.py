@@ -1,12 +1,12 @@
 from db.queries import Queries
-from service.analyze_data_service import AnalyzeData
+from service.analyze_data_service import AnalyzeDataService
 
 
 try:
     queries = Queries()
     queries.create_table()
 
-    cpf_validation = AnalyzeData()
+    cpf_validation = AnalyzeDataService()
     cpf_validation.analyze_data()
 
 except Exception as err:

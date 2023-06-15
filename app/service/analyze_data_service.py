@@ -1,10 +1,13 @@
 import pandas as pd
 from validate_docbr import CPF, CNPJ
 
-class AnalyzeData():
+from db.queries import Queries
+
+class AnalyzeDataService():
     def __init__(self) -> None:
         self.most_frequent_store_obj = None
         self.last_buy_obj = None
+        self.queries = Queries()
 
     def analyze_data(self):
         datas = pd.read_csv('./base_teste.txt', delim_whitespace=True)
@@ -31,17 +34,17 @@ class AnalyzeData():
                     self.last_buy_obj = None
 
             data_obj = {
-                'CPF': cpf_obj,
-                'PRIVATE': data[1][1],
-                'INCOMPLETO': data[1][2],
-                'DATA DA ULTIMA COMPRA': data[1][3],
-                'TICKET MÉDIO': data[1][4],
-                'TICKET DA ULTIMA COMPRA': data[1][5],
-                'LOJA MAIS FREQUENTE': self.most_frequent_store_obj,
-                'LOJA DA ULTIMA COMPRA': self.last_buy_obj
+                'cpf': cpf_obj,
+                'private': data[1][1],
+                'incompleto': data[1][2],
+                'data_ultima_compra': data[1][3],
+                'ticket_medio': data[1][4],
+                'ticket_ultima_compra': data[1][5],
+                'loja_mais_frequente': self.most_frequent_store_obj,
+                'loja_ultima_compra': self.last_buy_obj
             }
 
-            print(data_obj)
+            self.queries.insert_data(data_obj)
 
     def validator_cpf(self, cpf_text):
         cpf = CPF()
