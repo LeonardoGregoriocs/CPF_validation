@@ -1,4 +1,6 @@
 import pandas as pd
+from datetime import datetime
+
 from validate_docbr import CPF, CNPJ
 
 from db.queries import Queries
@@ -10,9 +12,10 @@ class AnalyzeDataService():
         self.queries = Queries()
 
     def analyze_data(self):
-        datas = pd.read_csv('./base_teste.txt', delim_whitespace=True)
+        data = pd.read_csv('./base_teste.txt', delim_whitespace=True)
+        data_without_repetition = data.drop_duplicates(keep='first')
 
-        for data in datas.iterrows():
+        for data in data_without_repetition.iterrows():
             cpf_obj = self.multipleReplace(data[1][0])
             cpf_is_valid = self.validator_cpf(cpf_obj)
 
@@ -37,9 +40,9 @@ class AnalyzeDataService():
                 'cpf': cpf_obj,
                 'private': data[1][1],
                 'incompleto': data[1][2],
-                'data_ultima_compra': data[1][3],
-                'ticket_medio': data[1][4],
-                'ticket_ultima_compra': data[1][5],
+                'data_ultima_compra': self.adjust_date(data[1][3]),
+                'ticket_medio': self.adjust_value(data[1][4]),
+                'ticket_ultima_compra': self.adjust_value(data[1][5]),
                 'loja_mais_frequente': self.most_frequent_store_obj,
                 'loja_ultima_compra': self.last_buy_obj
             }
@@ -61,6 +64,22 @@ class AnalyzeDataService():
         if cnpj_is_valid:
             return True
         return False
+
+    #Função responsável por converter o valor de str para float, para facilitar nas consultas no banco de dados.
+    def adjust_value(self, value):
+        if not pd.isna(value):
+            value_formatted = float(value.replace(',', '.'))
+            return value_formatted
+        return None
+
+    def adjust_date(self, date):
+        if not pd.isna(date):
+            format = "%Y-%m-%d"
+
+            res = bool(datetime.strptime(date, format))
+            if res:
+                return date
+        return None
 
     def multipleReplace(self, text):
         for char in ". - /":

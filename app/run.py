@@ -9,5 +9,7 @@ try:
     cpf_validation = AnalyzeDataService()
     cpf_validation.analyze_data()
 
+    print("Script run successfully")
+
 except Exception as err:
     print(f"Err: {err}")
