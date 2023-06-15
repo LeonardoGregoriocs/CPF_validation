@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  database:
+    image: postgres
+    container_name: db
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: neowayuser
+      POSTGRES_PASSWORD: neoway
+      POSTGRES_DB: dataclient
+      POSTGRES_HOST: 0.0.0.0
+
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - 7000:8080
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python
+    depends_on:
+      - database
+      - adminer
