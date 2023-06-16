@@ -13,6 +13,7 @@ class Queries:
 
         cursor.execute(
         """CREATE TABLE IF NOT EXISTS base_teste(
+            codigo SERIAL,
             cpf varchar(11) NOT NULL,
             PRIMARY KEY (cpf),
             private smallint NULL,

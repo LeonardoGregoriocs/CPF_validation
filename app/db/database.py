@@ -4,7 +4,7 @@ class DB:
     def __init__(self) -> None:
         self.connection = psycopg2.connect(
             database="dataclient",
-            host="172.18.0.2",
+            host="172.19.0.2",
             user="neowayuser",
             password="neoway"
         )
