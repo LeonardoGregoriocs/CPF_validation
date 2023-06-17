@@ -9,6 +9,8 @@ class AnalyzeDataService():
     def __init__(self) -> None:
         self.most_frequent_store_obj = None
         self.last_buy_obj = None
+        self.lib_cpf = CPF()
+        self.lib_cnpj = CNPJ()
         self.queries = Queries()
 
     def analyze_data(self):
@@ -16,28 +18,25 @@ class AnalyzeDataService():
         data_without_repetition = data.drop_duplicates(keep='first')
 
         for data in data_without_repetition.iterrows():
-            cpf_obj = self.multipleReplace(data[1][0])
-            cpf_is_valid = self.validator_cpf(cpf_obj)
+            cpf_is_valid = self.clean_and_validator_cpf(data[1][0])
 
             if not cpf_is_valid:
                 continue
 
             if not pd.isna(data[1][6]):
-                self.most_frequent_store_obj = self.multipleReplace(data[1][6])
-                most_frequent_store_is_valid = self.validator_cnpj(self.most_frequent_store_obj)
+                self.most_frequent_store_obj = self.clean_and_validator_cnpj(data[1][6])
 
-                if not most_frequent_store_is_valid:
+                if not self.most_frequent_store_obj:
                     self.most_frequent_store_obj = None
 
             if not pd.isna(data[1][7]):
-                self.last_buy_obj = self.multipleReplace(data[1][7])
-                last_buy_is_valid = self.validator_cnpj(self.last_buy_obj)
+                self.last_buy_obj = self.clean_and_validator_cnpj(data[1][7])
 
-                if not last_buy_is_valid:
+                if not self.last_buy_obj:
                     self.last_buy_obj = None
 
             data_obj = {
-                'cpf': cpf_obj,
+                'cpf': cpf_is_valid,
                 'private': data[1][1],
                 'incompleto': data[1][2],
                 'data_ultima_compra': self.adjust_date(data[1][3]),
@@ -49,20 +48,20 @@ class AnalyzeDataService():
 
             self.queries.insert_data(data_obj)
 
-    def validator_cpf(self, cpf_text):
-        cpf = CPF()
-        cpf_is_valid = cpf.validate(cpf_text)
+    def clean_and_validator_cpf(self, cpf_text):
+        cpf_obj = self.multipleReplace(cpf_text)
+        cpf_is_valid = self.lib_cpf.validate(cpf_obj)
 
         if cpf_is_valid:
-            return True
+            return cpf_obj
         return False
 
-    def validator_cnpj(self, cnpj_text):
-        cnpj = CNPJ()
-        cnpj_is_valid = cnpj.validate(cnpj_text)
+    def clean_and_validator_cnpj(self, cnpj_text):
+        cnpj_obj = self.multipleReplace(cnpj_text)
+        cnpj_is_valid = self.lib_cnpj.validate(cnpj_obj)
 
         if cnpj_is_valid:
-            return True
+            return cnpj_obj
         return False
 
     #Função responsável por converter o valor de str para float, para facilitar nas consultas no banco de dados.
