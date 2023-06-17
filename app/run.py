@@ -1,12 +1,12 @@
 import time
 
+time.sleep(10)
+
 from db.queries import Queries
 from service.analyze_data_service import AnalyzeDataService
 
 
 try:
-    time.sleep(15)
-
     queries = Queries()
     queries.create_table()
 
