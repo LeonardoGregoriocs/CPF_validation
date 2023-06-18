@@ -12,6 +12,8 @@ services:
       POSTGRES_PASSWORD: neoway
       POSTGRES_DB: dataclient
       POSTGRES_HOST: 0.0.0.0
+    #volumes:
+    # - ./pgdata:/var/lib/postgresql/data
 
   adminer:
     image: adminer
