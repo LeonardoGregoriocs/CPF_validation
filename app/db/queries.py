@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from db.database import DB
 
 
@@ -22,7 +24,8 @@ class Queries:
             ticket_medio float NULL,
             ticket_ultima_compra float NULL,
             loja_mais_frequente varchar(14) NULL,
-            loja_ultima_compra varchar(14) NULL);
+            loja_ultima_compra varchar(14) NULL,
+            data_inclusao varchar(50));
             """
         )
 
@@ -42,7 +45,8 @@ class Queries:
                 ticket_medio,
                 ticket_ultima_compra,
                 loja_mais_frequente,
-                loja_ultima_compra
+                loja_ultima_compra,
+                data_inclusao
             ) VALUES (
                 %(cpf)s,
                 %(private)s,
@@ -51,9 +55,13 @@ class Queries:
                 %(ticket_medio)s,
                 %(ticket_ultima_compra)s,
                 %(loja_mais_frequente)s,
-                %(loja_ultima_compra)s
+                %(loja_ultima_compra)s,
+                %(data_inclusao)s
             )
         """
+
+        data_inclusao_obj = datetime.now()
+        data_inclusao = data_inclusao_obj - timedelta(hours=3)
 
         cursor.execute(sql, {
             'cpf': data['cpf'],
@@ -63,7 +71,8 @@ class Queries:
             'ticket_medio': data['ticket_medio'],
             'ticket_ultima_compra': data['ticket_ultima_compra'],
             'loja_mais_frequente': data['loja_mais_frequente'],
-            'loja_ultima_compra': data['loja_ultima_compra']
+            'loja_ultima_compra': data['loja_ultima_compra'],
+            'data_inclusao': data_inclusao
         })
 
         database.commit()
