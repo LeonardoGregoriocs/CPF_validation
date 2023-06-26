@@ -3,7 +3,7 @@
 Essas instruções permitirão que você obtenha uma cópia e que consiga rodar o projeto em operação na sua máquina local.
 
   ####  Realize o clone do projeto:
-    https://gitlab.com/Leonardogregoriocs/digital_republic_code_challenge.git](https://github.com/LeonardoGregoriocs/analyze_data.git
+    https://github.com/LeonardoGregoriocs/analyze_data.git
 
 ### 📋 Pré-requisitos & Instalação
 
